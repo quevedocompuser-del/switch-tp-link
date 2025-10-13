@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Switches TP-Link - Catálogo y Carrito</title>
+    <style>
+        /* CSS para Diseño Móvil-Primero y Accesibilidad */
+        :root {
+            --primary-color: #0099cc; /* Azul TP-Link */
+            --secondary-color: #f7f7f7;
+            --text-color: #333;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --price-color: #e65100; /* Naranja para el precio */
+            --cart-color: #4CAF50; /* Verde para el carrito */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px var(--shadow);
+            position: sticky; /* Fija la cabecera al hacer scroll */
+            top: 0;
+            z-index: 1000;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5em; 
+        }
+
+        /* Botón/Ícono del Carrito Flotante (en Móvil) */
+        #cart-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--cart-color);
+            color: var(--white);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+        }
+        
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        .container {
+            padding: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Estilos de Producto --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info {
+            padding: 15px;
+            flex-grow: 1;
+        }
+        
+        .product-price {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--price-color);
+            margin: 10px 0;
+            padding: 0 15px;
+            text-align: right;
+        }
+
+        .add-to-cart-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--cart-color);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto; /* Empuja el botón a la parte inferior de la tarjeta */
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #388e3c;
+        }
+        
+        /* --- Estilos del Modal del Carrito --- */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 2000; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 10% arriba y centrado */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%; /* Ancho en móvil */
+            max-width: 500px; /* Ancho máximo en escritorio */
+            border-radius: 8px;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #cart-items {
+            list-style: none;
+            padding: 0;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+        }
+
+        #cart-items li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+        }
+        
+        .remove-item-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.7em;
+            margin-left: 10px;
+        }
+        
+        #cart-total {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid var(--price-color);
+            text-align: right;
+        }
+
+        /* Media Query para Tabletas y Escritorio */
+        @media (min-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Catálogo de Switches TP-Link</h1>
+    </header>
+
+    <div id="cart-icon">
+        🛒<span id="cart-count">0</span>
+    </div>
+
+    <div class="container">
+        <section id="product-list" class="product-grid">
+            </section>
+    </div>
+
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>🛍️ Tu Carrito de Compras</h2>
+            <ul id="cart-items">
+                </ul>
+            <div id="cart-total">Total: US$ 0.00</div>
+            <p style="font-size: 0.8em; margin-top: 20px;">*Precios referenciales en USD.</p>
+        </div>
+    </div>
+
+    <script>
+        // Estructura de datos de los productos con un precio único referencial en USD
+        const products = [
+            { id: 1, model: "LS1005G", ports: 5, speed: "Gigabit", poe: "No PoE", image: "LS1005G gr.jpg", description: "5 Puertos Gigabit. Serie LiteWave.", price: 15.00 },
+            { id: 2, model: "SF-1008D", ports: 8, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1008D gr.jpg", description: "8 Puertos Fast Ethernet. Diseño compacto.", price: 18.00 },
+            { id: 3, model: "LS1005", ports: 5, speed: "Fast Ethernet", poe: "No PoE", image: "LS1005 gr.jpg", description: "5 Puertos Fast Ethernet. Ideal para redes básicas.", price: 10.00 },
+            { id: 4, model: "LS1008G", ports: 8, speed: "Gigabit", poe: "No PoE", image: "LS1008G gr.jpg", description: "8 Puertos Gigabit. Transferencia ultrarrápida.", price: 30.00 },
+            { id: 5, model: "TL-SG1005P", ports: 5, speed: "Gigabit", poe: "PoE", image: "SG-1005P gr.jpg", description: "5 Puertos Gigabit con 4 Puertos PoE+.", price: 65.00 },
+            { id: 6, model: "SG-1008D", ports: 8, speed: "Gigabit", poe: "No PoE", image: "SG-1008D gr.jpg", description: "8 Puertos Gigabit. Carcasa elegante.", price: 28.00 },
+            { id: 7, model: "TL-SF1008P", ports: 8, speed: "Fast Ethernet", poe: "PoE", image: "SF1008P gr.jpg", description: "8 Puertos Fast Ethernet con 4 Puertos PoE+.", price: 55.00 },
+            { id: 8, model: "TL-SF1024D", ports: 24, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1024D gr.jpg", description: "24 Puertos Fast Ethernet. Redes empresariales.", price: 75.00 },
+            { id: 9, model: "SF-1016D", ports: 16, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1016D gr.jpg", description: "16 Puertos Fast Ethernet. Carcasa compacta.", price: 45.00 },
+            { id: 10, model: "LS1008", ports: 8, speed: "Fast Ethernet", poe: "No PoE", image: "LS1008 gr.jpg", description: "8 Puertos Fast Ethernet. LiteWave.", price: 18.00 }
+        ];
+
+        let cart = []; // Array que almacena los productos del carrito
+
+        const productListElement = document.getElementById('product-list');
+        const cartCountElement = document.getElementById('cart-count');
+        const cartItemsElement = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const cartModal = document.getElementById('cart-modal');
+        const cartIcon = document.getElementById('cart-icon');
+        const closeBtn = document.getElementsByClassName('close-btn')[0];
+
+        /**
+         * Crea y muestra las tarjetas de producto en el DOM.
+         */
+        function renderProducts() {
+            productListElement.innerHTML = ''; 
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                let tags = `<span class="feature-tag">${product.ports} Puertos</span>`;
+                tags += `<span class="feature-tag">${product.speed}</span>`;
+                if (product.poe === "PoE") {
+                    tags += `<span class="feature-tag poe-tag">PoE+</span>`;
+                }
+
+                card.innerHTML = `
+                    <img src="${product.image}" alt="Switch TP-Link ${product.model}" loading="lazy">
+                    <div class="product-info">
+                        <h2>TP-Link ${product.model}</h2>
+                        <p><strong>Puertos:</strong> ${product.ports}</p>
+                        <p><strong>Velocidad:</strong> ${product.speed}</p>
+                        <p>${product.description}</p>
+                        <div style="margin-top: 10px;">${tags}</div>
+                    </div>
+                    <div class="product-price">
+                        US$ ${product.price.toFixed(2)}
+                    </div>
+                    <button class="add-to-cart-btn" data-product-id="${product.id}">
+                        Añadir al Carrito
+                    </button>
+                `;
+                productListElement.appendChild(card);
+            });
+            
+            // Asigna el evento de click a todos los botones "Añadir al Carrito"
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.dataset.productId);
+                    addToCart(productId);
+                });
+            });
+        }
+
+        /**
+         * Añade un producto al carrito sin confirmación.
+         * @param {number} productId - ID del producto a añadir.
+         */
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                // Busca si el producto ya está en el carrito
+                const cartItem = cart.find(item => item.id === productId);
+                
+                if (cartItem) {
+                    cartItem.quantity += 1; // Si existe, aumenta la cantidad
+                } else {
+                    cart.push({ ...product, quantity: 1 }); // Si no existe, lo añade con cantidad 1
+                }
+                
+                updateCartDisplay();
+                // Opcional: Mostrar una pequeña notificación de éxito (no modal)
+                console.log(`Producto añadido: ${product.model}`); 
+            }
+        }
+
+        /**
+         * Elimina un artículo del carrito.
+         * @param {number} productId - ID del producto a eliminar.
+         */
+        function removeFromCart(productId) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index !== -1) {
+                const item = cart[index];
+                if (item.quantity > 1) {
+                    item.quantity -= 1; // Reduce la cantidad
+                } else {
+                    cart.splice(index, 1); // Elimina el producto si la cantidad es 1
+                }
+            }
+            updateCartDisplay();
+        }
+
+
+        /**
+         * Actualiza el contador del carrito y el contenido del modal.
+         */
+        function updateCartDisplay() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            cartCountElement.textContent = totalItems;
+            cartTotalElement.textContent = `Total: US$ ${totalAmount.toFixed(2)}`;
+            
+            // Actualizar la lista de elementos en el modal
+            cartItemsElement.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsElement.innerHTML = '<li>El carrito está vacío.</li>';
+            } else {
+                cart.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        ${item.model} (x${item.quantity})
+                        <span>
+                            US$ ${(item.price * item.quantity).toFixed(2)}
+                            <button class="remove-item-btn" data-product-id="${item.id}">-</button>
+                        </span>
+                    `;
+                    cartItemsElement.appendChild(li);
+                });
+                
+                // Asignar el evento de eliminar
+                document.querySelectorAll('.remove-item-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.dataset.productId);
+                        removeFromCart(productId);
+                    });
+                });
+            }
+        }
+
+        // --- Eventos del Modal ---
+
+        // Mostrar el modal al hacer clic en el ícono
+        cartIcon.addEventListener('click', () => {
+            updateCartDisplay(); // Asegurar que el contenido esté actualizado
+            cartModal.style.display = 'block';
+        });
+
+        // Ocultar el modal al hacer clic en (x)
+        closeBtn.addEventListener('click', () => {
+            cartModal.style.display = 'none';
+        });
+
+        // Ocultar el modal al hacer clic fuera
+        window.addEventListener('click', (event) => {
+            if (event.target === cartModal) {
+                cartModal.style.display = 'none';
+            }
+        });
+
+
+        // Inicializar la vista al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCartDisplay();
+        });
+    </script>
+
+</body>
+</html>
