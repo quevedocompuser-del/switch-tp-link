@@ -14,6 +14,7 @@
             --shadow: rgba(0, 0, 0, 0.1);
             --price-color: #e65100; /* Naranja para el precio */
             --cart-color: #4CAF50; /* Verde para el carrito */
+            --discount-color: #d9534f; /* Rojo para el descuento */
         }
 
         body {
@@ -39,6 +40,18 @@
         h1 {
             margin: 0;
             font-size: 1.5em; 
+        }
+        
+        /* Estilos para los datos de contacto */
+        .contact-info {
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .contact-info a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 5px;
         }
 
         /* Botón/Ícono del Carrito Flotante (en Móvil) */
@@ -191,13 +204,28 @@
             margin-left: 10px;
         }
         
-        #cart-total {
-            font-size: 1.5em;
-            font-weight: bold;
+        /* Estilos para el resumen del total */
+        .cart-summary {
             margin-top: 15px;
             padding-top: 10px;
             border-top: 2px solid var(--price-color);
             text-align: right;
+        }
+
+        .cart-summary p {
+            margin: 5px 0;
+            font-size: 1em;
+        }
+
+        .cart-summary #cart-discount {
+            color: var(--discount-color);
+            font-weight: bold;
+        }
+
+        .cart-summary #cart-total-final {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--cart-color);
         }
 
         /* Media Query para Tabletas y Escritorio */
@@ -212,7 +240,13 @@
 
     <header>
         <h1>Catálogo de Switches TP-Link</h1>
-    </header>
+        <div class="contact-info">
+            Contáctanos: 
+            <a href="mailto:dejaimesuarez@gmail.com">📧 dejaimesuarez@gmail.com</a> 
+            | 
+            <a href="https://wa.me/593997454001">📞 WhatsApp (0997454001)</a>
+        </div>
+        </header>
 
     <div id="cart-icon">
         🛒<span id="cart-count">0</span>
@@ -229,12 +263,20 @@
             <h2>🛍️ Tu Carrito de Compras</h2>
             <ul id="cart-items">
                 </ul>
-            <div id="cart-total">Total: US$ 0.00</div>
-            <p style="font-size: 0.8em; margin-top: 20px;">*Precios referenciales en USD.</p>
+            
+            <div class="cart-summary">
+                <p>Subtotal: <span id="cart-subtotal">US$ 0.00</span></p>
+                <p id="cart-discount">Descuento (10%): - US$ 0.00</p>
+                <p id="cart-total-final">Total a Pagar: US$ 0.00</p>
+            </div>
+            <p style="font-size: 0.8em; margin-top: 20px;">*Precios referenciales en USD. Descuento aplicado en el total a pagar.</p>
         </div>
     </div>
 
     <script>
+        // Constante para el descuento
+        const DISCOUNT_RATE = 0.10; // 10% de descuento
+
         // Estructura de datos de los productos con un precio único referencial en USD
         const products = [
             { id: 1, model: "LS1005G", ports: 5, speed: "Gigabit", poe: "No PoE", image: "LS1005G gr.jpg", description: "5 Puertos Gigabit. Serie LiteWave.", price: 15.00 },
@@ -246,7 +288,9 @@
             { id: 7, model: "TL-SF1008P", ports: 8, speed: "Fast Ethernet", poe: "PoE", image: "SF1008P gr.jpg", description: "8 Puertos Fast Ethernet con 4 Puertos PoE+.", price: 55.00 },
             { id: 8, model: "TL-SF1024D", ports: 24, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1024D gr.jpg", description: "24 Puertos Fast Ethernet. Redes empresariales.", price: 75.00 },
             { id: 9, model: "SF-1016D", ports: 16, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1016D gr.jpg", description: "16 Puertos Fast Ethernet. Carcasa compacta.", price: 45.00 },
-            { id: 10, model: "LS1008", ports: 8, speed: "Fast Ethernet", poe: "No PoE", image: "LS1008 gr.jpg", description: "8 Puertos Fast Ethernet. LiteWave.", price: 18.00 }
+            { id: 10, model: "LS1008", ports: 8, speed: "Fast Ethernet", poe: "No PoE", image: "LS1008 gr.jpg", description: "8 Puertos Fast Ethernet. LiteWave.", price: 18.00 },
+            // Producto Añadido previamente
+            { id: 11, model: "TL-SG2428P", ports: 24, speed: "Gigabit", poe: "PoE", image: "TL-SG2428P gr.jpg", description: "24 Puertos Gigabit PoE+ y 4 Ranuras SFP. Switch Smart JetStream.", price: 380.00 }
         ];
 
         let cart = []; // Array que almacena los productos del carrito
@@ -254,7 +298,12 @@
         const productListElement = document.getElementById('product-list');
         const cartCountElement = document.getElementById('cart-count');
         const cartItemsElement = document.getElementById('cart-items');
-        const cartTotalElement = document.getElementById('cart-total');
+        
+        // Elementos del resumen de compra
+        const cartSubtotalElement = document.getElementById('cart-subtotal');
+        const cartDiscountElement = document.getElementById('cart-discount');
+        const cartTotalFinalElement = document.getElementById('cart-total-final');
+        
         const cartModal = document.getElementById('cart-modal');
         const cartIcon = document.getElementById('cart-icon');
         const closeBtn = document.getElementsByClassName('close-btn')[0];
@@ -272,11 +321,14 @@
                 let tags = `<span class="feature-tag">${product.ports} Puertos</span>`;
                 tags += `<span class="feature-tag">${product.speed}</span>`;
                 if (product.poe === "PoE") {
+                    // Se usa PoE+ para los modelos que lo admiten (aunque el dato diga solo "PoE")
                     tags += `<span class="feature-tag poe-tag">PoE+</span>`;
                 }
 
+                // NOTA: Se asume que las imágenes existen con el nombre especificado, 
+                // ya que este es un entorno de solo código.
                 card.innerHTML = `
-                    <img src="${product.image}" alt="Switch TP-Link ${product.model}" loading="lazy">
+                    <img src="${product.image}" alt="Switch TP-Link ${product.model}" loading="lazy" style="width:100%; height:auto; object-fit:cover;">
                     <div class="product-info">
                         <h2>TP-Link ${product.model}</h2>
                         <p><strong>Puertos:</strong> ${product.ports}</p>
@@ -320,7 +372,6 @@
                 }
                 
                 updateCartDisplay();
-                // Opcional: Mostrar una pequeña notificación de éxito (no modal)
                 console.log(`Producto añadido: ${product.model}`); 
             }
         }
@@ -344,14 +395,27 @@
 
 
         /**
-         * Actualiza el contador del carrito y el contenido del modal.
+         * Actualiza el contador del carrito y el contenido del modal, incluyendo los totales con descuento.
          */
         function updateCartDisplay() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
+            // 1. Calcular el subtotal (total sin descuento)
+            const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // 2. Calcular el descuento
+            const discountAmount = subtotalAmount * DISCOUNT_RATE;
+            
+            // 3. Calcular el total final (subtotal - descuento)
+            const totalFinalAmount = subtotalAmount - discountAmount;
+            
+            // Actualizar el contador del ícono
             cartCountElement.textContent = totalItems;
-            cartTotalElement.textContent = `Total: US$ ${totalAmount.toFixed(2)}`;
+            
+            // Actualizar el resumen en el modal
+            cartSubtotalElement.textContent = `US$ ${subtotalAmount.toFixed(2)}`;
+            cartDiscountElement.textContent = `- US$ ${discountAmount.toFixed(2)}`;
+            cartTotalFinalElement.textContent = `Total a Pagar: US$ ${totalFinalAmount.toFixed(2)}`;
             
             // Actualizar la lista de elementos en el modal
             cartItemsElement.innerHTML = '';
