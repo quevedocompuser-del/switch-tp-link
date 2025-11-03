@@ -281,11 +281,11 @@
         // Estructura de datos de los productos con un precio único referencial en USD
         const products = [
             { id: 1, model: "MC110CS", ports: 1, speed: "Gigabit", poe: "No PoE", image: "MC110CS.jpg", description: "2 Puertos SC, 1 Gigabit", price: 50.00 },
-            { id: 2, model: "MC111CS", ports: 1, speed: "Fast Ethernet", poe: "No PoE", image: "MC111CS.jpg", description: "1 Puertos SC, 1 Puertos Fast Ethernet.", price: 40.00 },
-            { id: 3, model: "MC112CS", ports: 1, speed: "Fast Ethernet", poe: "No PoE", image: "MC112CS.jpg", description: "1 Puertos SC, 1 Puertos Fast Ethernet.", price: 40.00 },
-            { id: 4, model: "TL-WR840N", ports: 5, speed: "Fast Ethernet", poe: "No PoE", image: "TL-WR840N.jpg", description: "5 Puertos Fast Ethernet.", price: 20.00 },
-            { id: 5, model: "TL-SG1005P", ports: 5, speed: "Gigabit", poe: "PoE", image: "SG-1005P gr.jpg", description: "5 Puertos Fast Ethernet.", price: 20.00 },
-            { id: 6, model: "SG-1008D", ports: 8, speed: "Gigabit", poe: "No PoE", image: "SG-1008D gr.jpg", description: "8 Puertos Gigabit. Carcasa elegante.", price: 28.00 },
+            { id: 2, model: "MC111CS", ports: 1, speed: "Fast Ethernet", poe: "No PoE", image: "MC111CS.jpg", description: "1 Puerto SC.", price: 40.00 },
+            { id: 3, model: "MC112CS", ports: 1, speed: "Fast Ethernet", poe: "No PoE", image: "MC112CS.jpg", description: "1 Puerto SC.", price: 40.00 },
+            { id: 4, model: "TL-WR840N", ports: 5, speed: "Fast Ethernet", poe: "No PoE", image: "TL-WR840N.jpg", description: " ", price: 20.00 },
+            { id: 5, model: "TL-SG1005P", ports: 5, speed: "Gigabit", poe: "PoE", image: "SG-1005P gr.jpg", description: " ", price: 20.00 },
+            { id: 6, model: "SG-1008D", ports: 8, speed: "Gigabit", poe: "No PoE", image: "SG-1008D gr.jpg", description: " ", price: 28.00 },
             { id: 7, model: "TL-SF1008P", ports: 8, speed: "Fast Ethernet", poe: "PoE", image: "SF1008P gr.jpg", description: "8 Puertos Fast Ethernet con 4 Puertos PoE+.", price: 55.00 },
             { id: 8, model: "TL-SF1024D", ports: 24, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1024D gr.jpg", description: "24 Puertos Fast Ethernet. Redes empresariales.", price: 75.00 },
             { id: 9, model: "SF-1016D", ports: 16, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1016D gr.jpg", description: "16 Puertos Fast Ethernet. Carcasa compacta.", price: 45.00 },
@@ -319,7 +319,7 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
 
-                let tags = `<span class="feature-tag">${product.ports} Puertos</span>`;
+                let tags = `<span class="feature-tag">${product.ports} Puerto </span>`;
                 tags += `<span class="feature-tag">${product.speed}</span>`;
                 if (product.poe === "PoE") {
                     // Se usa PoE+ para los modelos que lo admiten (aunque el dato diga solo "PoE")
