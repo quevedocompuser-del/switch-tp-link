@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroTik SOHO - Tienda Móvil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <i class="fas fa-home"></i>
+            <span class="logo">MikroTik SOHO</span>
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count" class="badge">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h1>🥇 Nuestros Routers Básicos</h1>
+
+        <section id="product-list">
+            <div class="product-card" data-id="ax2" data-name="hAP ax²" data-price="119.99">
+                <div class="product-info">
+                    <h2>hAP ax² (Wi-Fi 6)</h2>
+                    <p>✅ **El más rápido.** Wi-Fi 6, 5x Gigabit.</p>
+                    <span class="price">$119.99</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Añadir 🛒</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-id="ac3" data-name="hAP ac³" data-price="94.99">
+                <div class="product-info">
+                    <h2>hAP ac³ (Wi-Fi 5)</h2>
+                    <p>✅ **Mejor valor/precio.** Wi-Fi 5, 5x Gigabit.</p>
+                    <span class="price">$94.99</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Añadir 🛒</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-id="hex" data-name="hEX" data-price="64.99">
+                <div class="product-info">
+                    <h2>hEX (Cableado)</h2>
+                    <p>✅ **El más económico.** 5x Gigabit, Solo cable.</p>
+                    <span class="price">$64.99</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Añadir 🛒</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-id="hexs" data-name="hEX S" data-price="79.99">
+                <div class="product-info">
+                    <h2>hEX S (Cableado + SFP)</h2>
+                    <p>✅ 5x Gigabit, Puerto **SFP** para fibra.</p>
+                    <span class="price">$79.99</span>
+                </div>
+                <div class="product-actions">
+                    <button class="add-to-cart">Añadir 🛒</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cart-view" class="hidden">
+            <h2>🛒 Mi Carrito</h2>
+            <div id="cart-items">
+                </div>
+            <div class="cart-summary">
+                <p>Total a Pagar (sin envío): <strong id="cart-total">$0.00</strong></p>
+                <button id="checkout-btn" class="primary-btn">Finalizar Compra</button>
+                <button id="close-cart-btn" class="secondary-btn">Seguir Comprando</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
