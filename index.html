@@ -235,6 +235,64 @@
             }
         }
     </style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+/* Estilos del Botón Flotante de WhatsApp */
+.whatsapp-float {
+    /* Posición Fija: El botón se queda quieto al hacer scroll */
+    position: fixed; 
+    
+    /* Ubicación: Inferior derecha */
+    bottom: 40px; 
+    right: 40px; 
+    
+    /* Estilos visuales del círculo */
+    background-color: #25D366; /* Verde oficial de WhatsApp */
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Para hacerlo redondo */
+    text-align: center;
+    font-size: 30px;
+    
+    /* Asegura que el botón esté por encima de otros elementos */
+    z-index: 1000;
+    
+    /* Centra el ícono */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Sombra para darle profundidad */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    
+    /* Animación suave al pasar el mouse */
+    transition: background-color 0.3s;
+}
+
+/* Ajuste del ícono */
+.whatsapp-icon {
+    /* Ajusta la posición del ícono Font Awesome */
+    margin-top: 2px;
+}
+
+/* Efecto al pasar el mouse (hover) */
+.whatsapp-float:hover {
+    background-color: #128C7E; /* Verde ligeramente más oscuro */
+}
+
+/* Media Query para pantallas pequeñas (opcional) */
+@media (max-width: 600px) {
+    .whatsapp-float {
+        /* Mueve el botón más cerca de la esquina en móviles */
+        bottom: 20px; 
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+    }
+}
 </head>
 <body>
 
@@ -244,11 +302,11 @@
             Contáctanos: 
             <a href="mailto:quevedocompuser@gmail.com">📧 quevedocompuser@gmail.com</a> 
             | <a 
-    href="https://wa.me/593959434002?text=Hola%2C%20quisiera%20más%20información" 
+    href="https://wa.me/593959434002?text=Hola%2C%20quisiera%20saber%20más" 
     class="whatsapp-float" 
     target="_blank"
 >
-    <span class="whatsapp-icon">💬</span>
+    <i class="fab fa-whatsapp whatsapp-icon"></i>
 </a>
 	</div>
         </header>
