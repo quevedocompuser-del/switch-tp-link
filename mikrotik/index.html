@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Switches TP-Link - Catálogo y Carrito</title>
-    <style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+	<style>
         /* CSS para Diseño Móvil-Primero y Accesibilidad */
         :root {
             --primary-color: #0099cc; /* Azul TP-Link */
@@ -234,7 +236,66 @@
                 font-size: 2em;
             }
         }
-    </style>
+   
+/* Estilos del Botón Flotante de WhatsApp */
+.whatsapp-float {
+    /* Posición Fija: El botón se queda quieto al hacer scroll */
+    position: fixed; 
+    
+    /* Ubicación: Inferior derecha */
+    bottom: 40px; 
+    left: 40px; 
+    
+    /* Estilos visuales del círculo */
+    background-color: #25D366; /* Verde oficial de WhatsApp */
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Para hacerlo redondo */
+    text-align: center;
+    font-size: 30px;
+    
+    /* Asegura que el botón esté por encima de otros elementos */
+    z-index: 1000;
+    
+    /* Centra el ícono */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Sombra para darle profundidad */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    
+    /* Animación suave al pasar el mouse */
+    transition: background-color 0.3s;
+}
+
+/* Ajuste del ícono */
+.whatsapp-icon {
+    /* Ajusta la posición del ícono Font Awesome */
+    margin-top: 2px;
+}
+
+/* Efecto al pasar el mouse (hover) */
+.whatsapp-float:hover {
+    background-color: #128C7E; /* Verde ligeramente más oscuro */
+}
+
+/* Media Query para pantallas pequeñas (opcional) */
+@media (max-width: 600px) {
+    .whatsapp-float {
+        /* Mueve el botón más cerca de la esquina en móviles */
+        bottom: 20px; 
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+    }
+}
+ </style>
+
+
+
 </head>
 <body>
 
@@ -242,12 +303,16 @@
         <h1>Catálogo de Switches TP-Link</h1>
         <div class="contact-info">
             Contáctanos: 
-            <a href="mailto:quevedocompuser@gmail.com">📧 quevedocompuser@gmail.com</a> 
-            | <a href="https://wa.me/593959434002?text=Hola%20estoy%20interesado%20en%20el%20producto." target="_blank">
-  <img src="queapp.jpg" alt="Ícono de WhatsApp" width="50" height="50">
+            <a href="mailto:quevedocompuser@gmail.com">📧 quevedocompuser@gmail.com</a>
+	<a 
+    href="https://wa.me/593959434002?text=Hola%2C%20quisiera%20saber%20más" 
+    class="whatsapp-float" 
+    target="_blank"
+>
+    <i class="fa-brands fa-whatsapp whatsapp-icon"></i> 
 </a>
 	</div>
-        </header>
+    </header>
 
     <div id="cart-icon">
         🛒<span id="cart-count">0</span>
@@ -280,12 +345,12 @@
 
         // Estructura de datos de los productos con un precio único referencial en USD
         const products = [
-            { id: 1, model: "RB760iGS_1", ports: 5, speed: "Gigabit", poe: "No PoE", image: "RB760iGS_1.jpg", description: "5 Puertos Gigabit. Serie LiteWave.", price: 15.00 },
-            { id: 2, model: "RB960PGS", ports: 8, speed: "Fast Ethernet", poe: "No PoE", image: "RB960PGS.jpg", description: "8 Puertos Fast Ethernet. Diseño compacto.", price: 18.00 },
-            { id: 3, model: "750gr3-2", ports: 5, speed: "Fast Ethernet", poe: "No PoE", image: "750gr3-2.jpg", description: "5 Puertos Fast Ethernet. Ideal para redes básicas.", price: 10.00 },
-            { id: 4, model: "LS1008G", ports: 8, speed: "Gigabit", poe: "No PoE", image: "LS1008G gr.jpg", description: "8 Puertos Gigabit. Transferencia ultrarrápida.", price: 30.00 },
-            { id: 5, model: "TL-SG1005P", ports: 5, speed: "Gigabit", poe: "PoE", image: "SG-1005P gr.jpg", description: "5 Puertos Gigabit con 4 Puertos PoE+.", price: 65.00 },
-            { id: 6, model: "SG-1008D", ports: 8, speed: "Gigabit", poe: "No PoE", image: "SG-1008D gr.jpg", description: "8 Puertos Gigabit. Carcasa elegante.", price: 28.00 },
+            { id: 1, model: "750gr3-2", ports: 5, speed: "Gigabit", poe: "No PoE", image: "750gr3-2.jpg", description: "1 Gigabit", price: 80.00 },
+            { id: 2, model: "Hex-lite-Mikrotik", ports: 1, speed: "Fast Ethernet", poe: "No PoE", image: "Hex-lite-Mikrotik.jpg", description: "5 Puerto Gigabits", price: 80.00 },
+            { id: 3, model: "RB760iGS_1", ports: 1, speed: "Fast Ethernet", poe: "No PoE", image: "RB760iGS_1.jpg", description: "5 Puerto Gigabits.", price: 80.00 },
+            { id: 4, model: "RB960PGS", ports: 5, speed: "Fast Ethernet", poe: "No PoE", image: "RB960PGS.jpg", description: " ", price: 80.00 },
+            { id: 5, model: "TL-SG1005P", ports: 5, speed: "Gigabit", poe: "PoE", image: "SG-1005P gr.jpg", description: " ", price: 20.00 },
+            { id: 6, model: "SG-1008D", ports: 8, speed: "Gigabit", poe: "No PoE", image: "SG-1008D gr.jpg", description: " ", price: 28.00 },
             { id: 7, model: "TL-SF1008P", ports: 8, speed: "Fast Ethernet", poe: "PoE", image: "SF1008P gr.jpg", description: "8 Puertos Fast Ethernet con 4 Puertos PoE+.", price: 55.00 },
             { id: 8, model: "TL-SF1024D", ports: 24, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1024D gr.jpg", description: "24 Puertos Fast Ethernet. Redes empresariales.", price: 75.00 },
             { id: 9, model: "SF-1016D", ports: 16, speed: "Fast Ethernet", poe: "No PoE", image: "SF-1016D gr.jpg", description: "16 Puertos Fast Ethernet. Carcasa compacta.", price: 45.00 },
@@ -319,7 +384,7 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
 
-                let tags = `<span class="feature-tag">${product.ports} Puertos</span>`;
+                let tags = `<span class="feature-tag">${product.ports} Puerto </span>`;
                 tags += `<span class="feature-tag">${product.speed}</span>`;
                 if (product.poe === "PoE") {
                     // Se usa PoE+ para los modelos que lo admiten (aunque el dato diga solo "PoE")
